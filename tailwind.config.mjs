@@ -4,52 +4,53 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Curry-themed color palette
-        primary: {
-          50: '#fff7ed',
-          100: '#ffedd5',
-          200: '#fed7aa',
-          300: '#fdba74',
-          400: '#fb923c',
-          500: '#f97316', // Main curry orange
-          600: '#ea580c', // Deep curry
-          700: '#c2410c',
-          800: '#9a3412',
-          900: '#7c2d12',
+        // Premium editorial color palette - warm, minimal, elegant
+        cream: {
+          50: '#fdfcfb',
+          100: '#faf8f5',
+          200: '#f5f3ef',
+          300: '#efeee9',
+          400: '#e5e3dc',
+          500: '#d9d6cd',
         },
-        secondary: {
-          50: '#ecfdf5',
-          100: '#d1fae5',
-          200: '#a7f3d0',
-          300: '#6ee7b7',
-          400: '#34d399',
-          500: '#10b981', // Fresh green
-          600: '#059669', // Herb green
-          700: '#047857',
-          800: '#065f46',
-          900: '#064e3b',
+        sage: {
+          50: '#f6f7f4',
+          100: '#e8ebe4',
+          200: '#d4daca',
+          300: '#b5c2a9',
+          400: '#93a682',
+          500: '#778a66',
         },
-        accent: {
-          50: '#fefce8',
-          100: '#fef9c3',
-          200: '#fef08a',
-          300: '#fde047',
-          400: '#facc15',
-          500: '#eab308',
-          600: '#ca8a04',
-          700: '#a16207',
-          800: '#854d0e', // Spice brown
-          900: '#78350f', // Deep spice
+        terracotta: {
+          50: '#fdf7f5',
+          100: '#fae8e3',
+          200: '#f5d4cb',
+          300: '#ebb8a7',
+          400: '#d99278',
+          500: '#c87556',
+        },
+        charcoal: {
+          50: '#f7f7f7',
+          100: '#e3e3e3',
+          200: '#c8c8c8',
+          300: '#a4a4a4',
+          400: '#717171',
+          500: '#4a4a4a',
+          600: '#2d2d2d',
+          700: '#1a1a1a',
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        serif: ['Merriweather', 'Georgia', 'serif'],
+        sans: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
+        serif: ['Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
+      },
+      maxWidth: {
+        'reading': '65ch',
       },
       typography: {
         DEFAULT: {
           css: {
-            maxWidth: '75ch',
+            maxWidth: '65ch',
           },
         },
       },

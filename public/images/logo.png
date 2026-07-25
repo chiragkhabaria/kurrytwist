@@ -1,6 +1,10 @@
-﻿<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
-  <rect width="800" height="600" fill="#f97316"/>
-  <text x="400" y="300" font-family="Arial" font-size="48" fill="white" text-anchor="middle">
-    Kurry Twist Logo
+﻿<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#faf8f5"/>
+  <text x="200" y="180" font-family="Georgia, serif" font-size="56" font-weight="bold" fill="#2d2d2d" text-anchor="middle">
+    Kurry
   </text>
+  <text x="200" y="240" font-family="Georgia, serif" font-size="56" font-weight="bold" fill="#a67c52" text-anchor="middle">
+    Twist
+  </text>
+  <circle cx="200" cy="280" r="2" fill="#a67c52"/>
 </svg>

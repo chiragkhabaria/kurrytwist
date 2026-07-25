@@ -1,8 +1,8 @@
 ---
 /**
  * Home Page
- * Displays hero banner, featured recipes, and latest recipes
- * Styled exclusively with Tailwind utilities
+ * Premium editorial homepage with magazine-style layout
+ * Clean, minimal, elegant design
  */
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -22,12 +22,12 @@ const featuredRecipe = sortedRecipes.find(recipe => recipe.data.featured) || sor
 
 // Get latest recipes (excluding featured)
 const latestRecipes = sortedRecipes
-  .filter(recipe => recipe.slug !== featuredRecipe?.slug)
+  .filter(recipe => recipe.id !== featuredRecipe?.id)
   .slice(0, 6);
 
 // Categories (hardcoded for now, can be dynamic later)
 const categories = [
-  { name: 'Appetizers', icon: '🍢', slug: 'appetizers' },
+  { name: 'Appetizers', icon: '🥟', slug: 'appetizers' },
   { name: 'Main Course', icon: '🍛', slug: 'main-course' },
   { name: 'Desserts', icon: '🍰', slug: 'desserts' },
   { name: 'Beverages', icon: '🍹', slug: 'beverages' },
@@ -35,13 +35,13 @@ const categories = [
 ---
 
 <BaseLayout
-  title="Kurry Twist"
+  title="Kurry Twist - Authentic Indian Recipes"
   description="Discover authentic Indian recipes with a modern twist. From traditional curries to innovative fusion dishes, explore our collection of carefully crafted recipes."
 >
   <!-- Hero Section -->
   <Hero
-    title="Welcome to Kurry Twist"
-    subtitle="Discover authentic Indian recipes with a modern twist"
+    title="Discover the Art of Indian Cooking"
+    subtitle="Authentic recipes, modern techniques, timeless flavors"
     backgroundImage="/images/sample-recipe.jpg"
     ctaText="Explore Recipes"
     ctaLink="/recipes"
@@ -50,56 +50,50 @@ const categories = [
 
   <!-- Featured Recipe Section -->
   {featuredRecipe && (
-    <section class="py-12 md:py-16 bg-white">
+    <section class="py-20 md:py-28 bg-cream-50">
       <div class="container mx-auto px-4">
-        <div class="text-center mb-8">
-          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-            Featured Recipe
-          </h2>
-          <p class="text-gray-600 text-lg max-w-2xl mx-auto">
-            Our handpicked favorite that you absolutely must try
-          </p>
-        </div>
-
-        <div class="max-w-4xl mx-auto">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div class="max-w-7xl mx-auto">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <!-- Image -->
-            <div class="order-2 md:order-1">
-              <img
-                src={featuredRecipe.data.image}
-                alt={featuredRecipe.data.title}
-                class="w-full h-80 object-cover rounded-lg shadow-lg"
-              />
+            <div class="order-2 lg:order-1">
+              <div class="relative aspect-[4/3] overflow-hidden">
+                <img
+                  src={featuredRecipe.data.image}
+                  alt={featuredRecipe.data.title}
+                  class="w-full h-full object-cover"
+                  onerror="this.onerror=null; this.src='/images/placeholder.jpg';"
+                />
+              </div>
             </div>
 
             <!-- Content -->
-            <div class="order-1 md:order-2">
-              <span class="inline-block bg-accent-500 text-white px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
-                FEATURED
-              </span>
-              <h3 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <div class="order-1 lg:order-2">
+              <p class="text-sm font-sans uppercase tracking-widest text-terracotta-500 mb-4">
+                Featured Recipe
+              </p>
+              <h2 class="text-4xl md:text-5xl font-serif font-bold text-charcoal-700 mb-6 leading-tight">
                 {featuredRecipe.data.title}
-              </h3>
-              <p class="text-gray-600 text-lg mb-6 leading-relaxed">
+              </h2>
+              <p class="text-charcoal-500 text-lg mb-8 leading-relaxed">
                 {featuredRecipe.data.description}
               </p>
 
               <!-- Metadata -->
-              <div class="flex flex-wrap gap-4 mb-6 text-gray-700">
+              <div class="flex flex-wrap gap-6 mb-8 text-sm text-charcoal-500 font-sans">
                 <div class="flex items-center gap-2">
-                  <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                   </svg>
                   <span>{featuredRecipe.data.prepTime} prep</span>
                 </div>
                 <div class="flex items-center gap-2">
-                  <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path>
                   </svg>
                   <span>{featuredRecipe.data.cookTime} cook</span>
                 </div>
                 <div class="flex items-center gap-2">
-                  <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                   </svg>
                   <span>{featuredRecipe.data.servings} servings</span>
@@ -107,8 +101,8 @@ const categories = [
               </div>
 
               <a
-                href={`/recipes/${featuredRecipe.slug}`}
-                class="inline-block bg-primary-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-primary-700 transition-colors"
+                href={`/recipes/${featuredRecipe.id}`}
+                class="inline-block bg-terracotta-500 text-white font-sans font-semibold text-sm uppercase tracking-wider px-8 py-4 hover:bg-terracotta-600 transition-colors"
               >
                 View Recipe
               </a>
@@ -120,90 +114,112 @@ const categories = [
   )}
 
   <!-- Latest Recipes Section -->
-  <section class="py-12 md:py-16 bg-gray-50">
+  <section class="py-20 md:py-28 bg-white">
     <div class="container mx-auto px-4">
-      <div class="text-center mb-8 md:mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-          Latest Recipes
-        </h2>
-        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
-          Fresh from our kitchen to yours - explore our newest creations
-        </p>
-      </div>
+      <div class="max-w-7xl mx-auto">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+          <p class="text-sm font-sans uppercase tracking-widest text-terracotta-500 mb-3">
+            Fresh from the kitchen
+          </p>
+          <h2 class="text-4xl md:text-5xl font-serif font-bold text-charcoal-700 mb-4">
+            Latest Recipes
+          </h2>
+          <p class="text-charcoal-500 text-lg max-w-2xl mx-auto">
+            Discover our newest creations, crafted with love and tradition
+          </p>
+        </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto">
-        {latestRecipes.map((recipe) => (
-          <RecipeCard
-            title={recipe.data.title}
-            slug={recipe.slug}
-            description={recipe.data.description}
-            category={recipe.data.category}
-            image={recipe.data.image}
-            prepTime={recipe.data.prepTime}
-            cookTime={recipe.data.cookTime}
-            difficulty={recipe.data.difficulty}
-            featured={recipe.data.featured}
-          />
-        ))}
-      </div>
+        <!-- Recipe Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+          {latestRecipes.map((recipe) => (
+            <RecipeCard
+              title={recipe.data.title}
+              slug={recipe.id}
+              description={recipe.data.description}
+              category={recipe.data.category}
+              image={recipe.data.image}
+              prepTime={recipe.data.prepTime}
+              cookTime={recipe.data.cookTime}
+              difficulty={recipe.data.difficulty}
+              featured={recipe.data.featured}
+            />
+          ))}
+        </div>
 
-      <!-- View All Button -->
-      <div class="text-center mt-10">
-        <a
-          href="/recipes"
-          class="inline-block bg-white text-primary-600 border-2 border-primary-600 font-semibold px-8 py-3 rounded-lg hover:bg-primary-600 hover:text-white transition-colors"
-        >
-          View All Recipes
-        </a>
+        <!-- View All Button -->
+        <div class="text-center mt-16">
+          <a
+            href="/recipes"
+            class="inline-block border-2 border-charcoal-700 text-charcoal-700 font-sans font-semibold text-sm uppercase tracking-wider px-8 py-4 hover:bg-charcoal-700 hover:text-cream-50 transition-colors"
+          >
+            View All Recipes
+          </a>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Categories Section -->
-  <section class="py-12 md:py-16 bg-white">
+  <section class="py-20 md:py-28 bg-cream-50">
     <div class="container mx-auto px-4">
-      <div class="text-center mb-8 md:mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-          Browse by Category
-        </h2>
-        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
-          Find the perfect recipe for any occasion
-        </p>
-      </div>
+      <div class="max-w-7xl mx-auto">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+          <p class="text-sm font-sans uppercase tracking-widest text-terracotta-500 mb-3">
+            Explore by category
+          </p>
+          <h2 class="text-4xl md:text-5xl font-serif font-bold text-charcoal-700">
+            Recipe Collections
+          </h2>
+        </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-5xl mx-auto">
-        {categories.map((category) => (
-          <a
-            href={`/recipes?category=${category.slug}`}
-            class="group bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-6 md:p-8 text-center hover:shadow-lg hover:scale-105 transition-all duration-300"
-          >
-            <div class="text-5xl md:text-6xl mb-3">
-              {category.icon}
-            </div>
-            <h3 class="text-lg md:text-xl font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
-              {category.name}
-            </h3>
-          </a>
-        ))}
+        <!-- Categories Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {categories.map((category) => (
+            <a
+              href={`/recipes#${category.slug}`}
+              class="group bg-white p-8 text-center hover:shadow-lg transition-shadow"
+            >
+              <div class="text-5xl mb-4">{category.icon}</div>
+              <h3 class="text-lg font-serif font-semibold text-charcoal-700 group-hover:text-terracotta-500 transition-colors">
+                {category.name}
+              </h3>
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Call to Action Section -->
-  <section class="py-16 md:py-20 bg-gradient-to-r from-primary-600 to-orange-600">
-    <div class="container mx-auto px-4 text-center">
-      <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
-        Ready to Start Cooking?
-      </h2>
-      <p class="text-lg md:text-xl text-white/95 mb-8 max-w-2xl mx-auto">
-        Join thousands of home cooks discovering the joy of authentic Indian cuisine
-      </p>
-      <a
-        href="/recipes"
-        class="inline-block bg-white text-primary-600 font-semibold px-10 py-4 rounded-full hover:bg-orange-50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-      >
-        Get Started Now
-      </a>
+  <!-- Newsletter Section -->
+  <section class="py-20 md:py-28 bg-sage-50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-2xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-serif font-bold text-charcoal-700 mb-4">
+          Never Miss a Recipe
+        </h2>
+        <p class="text-charcoal-500 text-lg mb-8">
+          Join our community and get new recipes delivered to your inbox
+        </p>
+        <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+          <input
+            type="email"
+            placeholder="Your email address"
+            class="flex-1 px-6 py-4 border border-cream-400 bg-white focus:outline-none focus:border-terracotta-500 text-charcoal-700"
+            required
+          />
+          <button
+            type="submit"
+            class="px-8 py-4 bg-terracotta-500 text-white font-sans font-semibold text-sm uppercase tracking-wider hover:bg-terracotta-600 transition-colors whitespace-nowrap"
+          >
+            Subscribe
+          </button>
+        </form>
+        <p class="text-xs text-charcoal-400 mt-4">
+          We respect your privacy. Unsubscribe anytime.
+        </p>
+      </div>
     </div>
   </section>
 </BaseLayout>

@@ -1,18 +1,57 @@
 /* Tailwind CSS directives - Tailwind v4 with Vite plugin */
 @import "tailwindcss";
 
-/* Minimal global styles - let Tailwind handle everything else */
-@layer base {
-  html {
-    scroll-behavior: smooth;
-  }
+/* Define custom colors as CSS variables */
+@theme {
+  --color-cream-50: #fdfcfb;
+  --color-cream-100: #faf8f5;
+  --color-cream-200: #f5f3ef;
+  --color-cream-300: #efeee9;
+  --color-cream-400: #e5e3dc;
+  --color-cream-500: #d9d6cd;
   
-  body {
-    @apply text-gray-900 bg-gray-50;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+  --color-sage-50: #f6f7f4;
+  --color-sage-100: #e8ebe4;
+  --color-sage-200: #d4daca;
+  --color-sage-300: #b5c2a9;
+  --color-sage-400: #93a682;
+  --color-sage-500: #778a66;
+  
+  --color-terracotta-50: #fdf7f5;
+  --color-terracotta-100: #fae8e3;
+  --color-terracotta-200: #f5d4cb;
+  --color-terracotta-300: #ebb8a7;
+  --color-terracotta-400: #d99278;
+  --color-terracotta-500: #c87556;
+  --color-terracotta-600: #b5643d;
+  
+  --color-charcoal-50: #f7f7f7;
+  --color-charcoal-100: #e3e3e3;
+  --color-charcoal-200: #c8c8c8;
+  --color-charcoal-300: #a4a4a4;
+  --color-charcoal-400: #717171;
+  --color-charcoal-500: #4a4a4a;
+  --color-charcoal-600: #2d2d2d;
+  --color-charcoal-700: #1a1a1a;
+  
+  --font-family-serif: Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* Reference Tailwind utilities for use in components */
-@reference "tailwindcss";
+/* Minimal global styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--color-charcoal-600);
+  background-color: var(--color-cream-100);
+  font-family: var(--font-family-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-serif);
+  color: var(--color-charcoal-700);
+}

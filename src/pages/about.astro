@@ -1,95 +1,144 @@
 ---
 /**
  * About Page
- * Simple placeholder about page
+ * Premium editorial about page with clean layout
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
-  title="About Us"
-  description="Learn more about Kurry Twist - our mission to share authentic Indian recipes with home cooks around the world."
+  title="About Kurry Twist"
+  description="Learn about Kurry Twist and our mission to share authentic Indian recipes with a modern twist."
 >
-  <section class="py-16 md:py-24 bg-gray-50">
-    <div class="container mx-auto px-4 max-w-4xl">
-      <!-- Header -->
-      <div class="text-center mb-12">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+  <!-- Hero Section -->
+  <section class="bg-cream-50 py-20 md:py-28">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl mx-auto text-center">
+        <p class="text-sm font-sans uppercase tracking-widest text-terracotta-500 mb-3">
+          Our story
+        </p>
+        <h1 class="text-5xl md:text-6xl font-serif font-bold text-charcoal-700 mb-6">
           About Kurry Twist
         </h1>
-        <p class="text-xl text-gray-600">
-          Sharing the flavors of India, one recipe at a time
+        <p class="text-xl text-charcoal-500 leading-relaxed">
+          Where tradition meets innovation in every dish
         </p>
       </div>
+    </div>
+  </section>
 
-      <!-- Content -->
-      <div class="about-content bg-white rounded-lg shadow-md p-8 md:p-12">
-        <h2>Our Story</h2>
+  <!-- Main Content -->
+  <section class="py-20 md:py-28 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-reading mx-auto about-content">
+        <h2>Welcome to Kurry Twist</h2>
         <p>
-          Welcome to Kurry Twist! We're passionate about bringing the rich, diverse flavors of Indian cuisine 
-          to home cooks everywhere. Whether you're a seasoned chef or just starting your culinary journey, 
-          our collection of authentic recipes will help you create delicious Indian meals in your own kitchen.
+          Kurry Twist is more than just a recipe website—it's a celebration of Indian culinary traditions reimagined for modern kitchens. We believe that great food tells a story, and every dish we share carries with it centuries of heritage, culture, and love.
         </p>
 
-        <h2>Our Mission</h2>
         <p>
-          At Kurry Twist, we believe that cooking should be accessible, enjoyable, and rewarding. Our mission 
-          is to demystify Indian cooking by providing clear, detailed recipes that anyone can follow. From 
-          traditional curries to modern fusion dishes, we're here to guide you every step of the way.
+          Our journey began with a simple question: How can we honor traditional Indian recipes while making them accessible and exciting for today's home cooks? The answer became Kurry Twist—a place where authentic flavors meet contemporary cooking techniques.
         </p>
 
-        <h2>What We Offer</h2>
+        <h2>Our Philosophy</h2>
+        <p>
+          We believe in cooking with intention. Every recipe on Kurry Twist is:
+        </p>
+
         <ul>
-          <li><strong>Authentic Recipes:</strong> Time-tested recipes passed down through generations</li>
-          <li><strong>Step-by-Step Instructions:</strong> Clear, detailed instructions with helpful tips</li>
-          <li><strong>Beautiful Photography:</strong> Visual guides to help you along the way</li>
-          <li><strong>Video Tutorials:</strong> Watch and learn with our recipe videos</li>
-          <li><strong>Dietary Options:</strong> Vegetarian, vegan, and gluten-free variations</li>
+          <li><strong>Authentic</strong> - Rooted in traditional Indian cooking methods and flavor profiles</li>
+          <li><strong>Accessible</strong> - Written with clear instructions and common ingredients</li>
+          <li><strong>Tested</strong> - Each recipe is thoroughly tested to ensure success in your kitchen</li>
+          <li><strong>Sustainable</strong> - We prioritize seasonal ingredients and mindful cooking</li>
+          <li><strong>Inclusive</strong> - Modifications and alternatives for various dietary needs</li>
         </ul>
+
+        <h2>What Makes Us Different</h2>
+        <p>
+          Unlike other recipe sites, we don't just give you a list of ingredients and steps. We share the story behind each dish, explain the science of flavors, and guide you through the nuances that make Indian cooking truly special.
+        </p>
+
+        <p>
+          Our recipes bridge the gap between your grandmother's kitchen and your modern lifestyle—preserving the soul of traditional Indian cooking while adapting to contemporary tastes and time constraints.
+        </p>
 
         <h2>Join Our Community</h2>
         <p>
-          We're more than just a recipe website - we're a community of food lovers who share a passion for 
-          Indian cuisine. Follow us on social media, share your creations, and connect with fellow home cooks 
-          from around the world.
+          Kurry Twist is built on the belief that cooking is a shared experience. We invite you to try our recipes, share your results, and become part of a community that celebrates the rich tapestry of Indian cuisine.
         </p>
 
-        <div class="text-center mt-8 pt-8 border-t border-gray-200">
-          <p class="text-gray-600 mb-4">
-            Ready to start cooking?
-          </p>
-          <a
-            href="/recipes"
-            class="inline-block bg-primary-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-primary-700 transition-colors"
-          >
-            Browse Recipes
-          </a>
-        </div>
+        <p>
+          Whether you're a seasoned cook or just starting your culinary journey, there's a place for you at our table. Let's discover the art of Indian cooking together.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 md:py-28 bg-sage-50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-2xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-serif font-bold text-charcoal-700 mb-6">
+          Start Your Culinary Journey
+        </h2>
+        <p class="text-charcoal-500 text-lg mb-8">
+          Explore our collection of authentic Indian recipes
+        </p>
+        <a
+          href="/recipes"
+          class="inline-block bg-terracotta-500 text-white font-sans font-semibold text-sm uppercase tracking-wider px-8 py-4 hover:bg-terracotta-600 transition-colors"
+        >
+          Browse Recipes
+        </a>
       </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  @reference "tailwindcss";
-
   .about-content h2 {
-    @apply text-2xl font-bold text-gray-900 mt-8 mb-4;
+    font-size: 1.875rem;
+    font-family: var(--font-family-serif);
+    font-weight: bold;
+    color: var(--color-charcoal-700);
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .about-content h2:first-child {
+    margin-top: 0;
   }
   
   .about-content p {
-    @apply text-gray-700 leading-relaxed mb-4;
+    color: var(--color-charcoal-600);
+    line-height: 1.625;
+    margin-bottom: 1.5rem;
+    font-size: 1.125rem;
   }
   
   .about-content ul {
-    @apply list-disc list-inside space-y-2 mb-6 text-gray-700;
+    margin-bottom: 2rem;
   }
   
   .about-content ul li {
-    @apply leading-relaxed;
+    color: var(--color-charcoal-600);
+    line-height: 1.625;
+    padding-left: 1.5rem;
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  
+  .about-content ul li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--color-terracotta-500);
+    font-weight: bold;
+    font-size: 1.25rem;
   }
   
   .about-content strong {
-    @apply font-semibold text-gray-900;
+    font-weight: 600;
+    color: var(--color-charcoal-700);
   }
 </style>
