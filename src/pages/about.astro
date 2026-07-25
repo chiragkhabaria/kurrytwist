@@ -1,0 +1,95 @@
+---
+/**
+ * About Page
+ * Simple placeholder about page
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About Us"
+  description="Learn more about Kurry Twist - our mission to share authentic Indian recipes with home cooks around the world."
+>
+  <section class="py-16 md:py-24 bg-gray-50">
+    <div class="container mx-auto px-4 max-w-4xl">
+      <!-- Header -->
+      <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          About Kurry Twist
+        </h1>
+        <p class="text-xl text-gray-600">
+          Sharing the flavors of India, one recipe at a time
+        </p>
+      </div>
+
+      <!-- Content -->
+      <div class="about-content bg-white rounded-lg shadow-md p-8 md:p-12">
+        <h2>Our Story</h2>
+        <p>
+          Welcome to Kurry Twist! We're passionate about bringing the rich, diverse flavors of Indian cuisine 
+          to home cooks everywhere. Whether you're a seasoned chef or just starting your culinary journey, 
+          our collection of authentic recipes will help you create delicious Indian meals in your own kitchen.
+        </p>
+
+        <h2>Our Mission</h2>
+        <p>
+          At Kurry Twist, we believe that cooking should be accessible, enjoyable, and rewarding. Our mission 
+          is to demystify Indian cooking by providing clear, detailed recipes that anyone can follow. From 
+          traditional curries to modern fusion dishes, we're here to guide you every step of the way.
+        </p>
+
+        <h2>What We Offer</h2>
+        <ul>
+          <li><strong>Authentic Recipes:</strong> Time-tested recipes passed down through generations</li>
+          <li><strong>Step-by-Step Instructions:</strong> Clear, detailed instructions with helpful tips</li>
+          <li><strong>Beautiful Photography:</strong> Visual guides to help you along the way</li>
+          <li><strong>Video Tutorials:</strong> Watch and learn with our recipe videos</li>
+          <li><strong>Dietary Options:</strong> Vegetarian, vegan, and gluten-free variations</li>
+        </ul>
+
+        <h2>Join Our Community</h2>
+        <p>
+          We're more than just a recipe website - we're a community of food lovers who share a passion for 
+          Indian cuisine. Follow us on social media, share your creations, and connect with fellow home cooks 
+          from around the world.
+        </p>
+
+        <div class="text-center mt-8 pt-8 border-t border-gray-200">
+          <p class="text-gray-600 mb-4">
+            Ready to start cooking?
+          </p>
+          <a
+            href="/recipes"
+            class="inline-block bg-primary-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-primary-700 transition-colors"
+          >
+            Browse Recipes
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  @reference "tailwindcss";
+
+  .about-content h2 {
+    @apply text-2xl font-bold text-gray-900 mt-8 mb-4;
+  }
+  
+  .about-content p {
+    @apply text-gray-700 leading-relaxed mb-4;
+  }
+  
+  .about-content ul {
+    @apply list-disc list-inside space-y-2 mb-6 text-gray-700;
+  }
+  
+  .about-content ul li {
+    @apply leading-relaxed;
+  }
+  
+  .about-content strong {
+    @apply font-semibold text-gray-900;
+  }
+</style>

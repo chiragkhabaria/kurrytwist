@@ -1,0 +1,105 @@
+---
+/**
+ * RecipeCard Component
+ * Displays recipe preview with image, title, category, and metadata
+ * Styled exclusively with Tailwind utilities
+ */
+export interface Props {
+  title: string;
+  slug: string;
+  description?: string;
+  category: string;
+  image: string;
+  prepTime: string;
+  cookTime: string;
+  difficulty?: string;
+  featured?: boolean;
+}
+
+const {
+  title,
+  slug,
+  description,
+  category,
+  image,
+  prepTime,
+  cookTime,
+  difficulty,
+  featured = false
+} = Astro.props;
+
+const difficultyColors = {
+  Easy: 'bg-green-100 text-green-700',
+  Medium: 'bg-yellow-100 text-yellow-700',
+  Hard: 'bg-red-100 text-red-700',
+};
+
+const difficultyColor = difficulty ? (difficultyColors[difficulty as keyof typeof difficultyColors] || 'bg-gray-100 text-gray-700') : 'bg-gray-100 text-gray-700';
+---
+
+<article class="group rounded-lg shadow-md overflow-hidden bg-white hover:shadow-xl transition-shadow duration-300">
+  <a href={`/recipes/${slug}`} class="block">
+    <!-- Image -->
+    <div class="relative w-full h-48 md:h-56 overflow-hidden bg-gray-200">
+      <img
+        src={image}
+        alt={title}
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        loading="lazy"
+      />
+      {featured && (
+        <div class="absolute top-3 right-3 bg-accent-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
+          Featured
+        </div>
+      )}
+    </div>
+
+    <!-- Content -->
+    <div class="p-4 md:p-5">
+      <!-- Category Badge -->
+      <div class="mb-2">
+        <span class="inline-block bg-orange-100 text-primary-600 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide">
+          {category}
+        </span>
+      </div>
+
+      <!-- Title -->
+      <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">
+        {title}
+      </h3>
+
+      <!-- Description -->
+      {description && (
+        <p class="text-gray-600 text-sm mb-3 line-clamp-2">
+          {description}
+        </p>
+      )}
+
+      <!-- Metadata -->
+      <div class="flex flex-wrap items-center gap-3 text-sm text-gray-600">
+        <!-- Prep Time -->
+        <div class="flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span>{prepTime}</span>
+        </div>
+
+        <!-- Cook Time -->
+        <div class="flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path>
+          </svg>
+          <span>{cookTime}</span>
+        </div>
+
+        <!-- Difficulty -->
+        {difficulty && (
+          <div class={`px-2 py-0.5 rounded text-xs font-medium ${difficultyColor}`}>
+            {difficulty}
+          </div>
+        )}
+      </div>
+    </div>
+  </a>
+</article>

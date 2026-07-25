@@ -1,0 +1,28 @@
+---
+/**
+ * YoutubeEmbed Component
+ * Responsive YouTube video embed with 16:9 aspect ratio
+ * Styled exclusively with Tailwind utilities
+ */
+export interface Props {
+  videoId: string;
+  title?: string;
+}
+
+const { videoId, title = 'Recipe Video' } = Astro.props;
+---
+
+<div class="my-6 md:my-8">
+  <!-- Responsive 16:9 container using padding-bottom technique -->
+  <div class="relative w-full pb-[56.25%] rounded-lg overflow-hidden shadow-lg bg-gray-200">
+    <iframe
+      class="absolute inset-0 w-full h-full"
+      src={`https://www.youtube-nocookie.com/embed/${videoId}`}
+      title={title}
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+      loading="lazy"
+    ></iframe>
+  </div>
+</div>

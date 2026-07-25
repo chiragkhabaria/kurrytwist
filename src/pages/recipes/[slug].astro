@@ -1,0 +1,36 @@
+---
+/**
+ * Dynamic Recipe Detail Page
+ * Generates individual pages for each recipe
+ */
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import RecipeLayout from '../../layouts/RecipeLayout.astro';
+
+export const getStaticPaths = (async () => {
+  const recipes = await getCollection('recipes');
+  return recipes.map((recipe) => ({
+    params: { slug: recipe.id },
+    props: { recipe },
+  }));
+}) satisfies GetStaticPaths;
+
+const { recipe } = Astro.props;
+const { Content, remarkPluginFrontmatter } = await render(recipe);
+---
+
+<RecipeLayout
+  title={recipe.data.title}
+  description={recipe.data.description}
+  image={recipe.data.image}
+  category={recipe.data.category}
+  prepTime={recipe.data.prepTime}
+  cookTime={recipe.data.cookTime}
+  servings={recipe.data.servings}
+  difficulty={recipe.data.difficulty}
+  youtube={recipe.data.youtube}
+  publishedTime={recipe.data.date.toISOString()}
+>
+  <!-- Main content (instructions, tips, etc.) -->
+  <Content />
+</RecipeLayout>
