@@ -1,12 +1,12 @@
 ---
 /**
- * Recipe Layout
- * Cucinetta-inspired layout with TOC sidebar, serving adjustment, checkable ingredients
+ * Recipe Layout - Cucinetta-inspired design
+ * Title above hero image, two-column ingredients, proper responsive layout
  */
 import BaseLayout from './BaseLayout.astro';
-import RecipeInfo from '../components/RecipeInfo.astro';
-import TableOfContents from '../components/TableOfContents.astro';
 import StarRating from '../components/StarRating.astro';
+import ServingAdjuster from '../components/ServingAdjuster.astro';
+import TableOfContents from '../components/TableOfContents.astro';
 import YoutubeEmbed from '../components/YoutubeEmbed.astro';
 
 interface Props {
@@ -48,83 +48,147 @@ const formattedDate = new Date(date).toLocaleDateString('en-US', {
   day: 'numeric',
   year: 'numeric'
 });
+
+// Calculate total time
+const prepMinutes = parseInt(prepTime.match(/\d+/)?.[0] || '0');
+const cookMinutes = parseInt(cookTime.match(/\d+/)?.[0] || '0');
+const totalMinutes = prepMinutes + cookMinutes;
 ---
 
 <BaseLayout title={title} description={description}>
-  <!-- Hero Section -->
-  <div class="relative w-full h-[60vh] min-h-[400px] max-h-[600px]">
-    <img
-      src={imageUrl}
-      alt={title}
-      class="w-full h-full object-cover"
-      onerror="this.onerror=null; this.src='/images/placeholder.jpg';"
-    />
-    <div class="absolute inset-0 bg-gradient-to-t from-charcoal-900/80 via-charcoal-900/40 to-transparent"></div>
-    
-    <!-- Hero Content -->
-    <div class="absolute bottom-0 left-0 right-0 pb-12">
-      <div class="container mx-auto px-4">
-        <div class="max-w-4xl mx-auto">
-          <div class="mb-4">
-            <span class="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-xs uppercase tracking-wider text-charcoal-700 font-semibold rounded-full">
-              {category}
-            </span>
-          </div>
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-4">
-            {title}
-          </h1>
-          <p class="text-xl text-white/90 max-w-2xl">
-            {description}
-          </p>
-        </div>
+  <!-- Header with breadcrumb and title -->
+  <div class="bg-white border-b border-sage-100 py-8">
+    <div class="container mx-auto px-4 max-w-5xl">
+      <!-- Breadcrumb -->
+      <div class="mb-4">
+        <a href="/" class="text-terracotta-500 text-xs uppercase tracking-wider hover:text-terracotta-600">
+          ← All recipes
+        </a>
+      </div>
+      
+      <!-- Category Badge -->
+      <div class="mb-3">
+        <span class="text-xs uppercase tracking-widest text-terracotta-500 font-semibold">
+          {category}
+        </span>
+      </div>
+      
+      <!-- Title -->
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-charcoal-800 mb-4 leading-tight">
+        {title}
+      </h1>
+      
+      <!-- Description -->
+      <p class="text-lg text-charcoal-600 mb-6 max-w-3xl leading-relaxed">
+        {description}
+      </p>
+      
+      <!-- Metadata Row -->
+      <div class="flex flex-wrap items-center gap-4 text-sm text-charcoal-600">
+        <span>By Elena March</span>
+        <span>•</span>
+        <time datetime={date.toISOString()}>
+          {formattedDate}
+        </time>
+        {rating && (
+          <>
+            <span>•</span>
+            <StarRating rating={rating} reviewCount={reviewCount} size="sm" />
+          </>
+        )}
+        {difficulty && (
+          <>
+            <span>•</span>
+            <span>{difficulty}</span>
+          </>
+        )}
       </div>
     </div>
   </div>
 
-  <!-- Main Content -->
-  <div class="bg-cream-50 py-12 md:py-16">
+  <!-- Hero Image -->
+  <div class="w-full bg-white">
+    <div class="container mx-auto px-4 max-w-5xl py-8">
+      <div class="relative w-full aspect-[16/10] rounded-2xl overflow-hidden">
+        <img
+          src={imageUrl}
+          alt={title}
+          class="w-full h-full object-cover"
+          onerror="this.onerror=null; this.src='/images/placeholder.jpg';"
+        />
+        <button class="absolute bottom-4 right-4 px-4 py-2 bg-white hover:bg-cream-50 text-charcoal-700 rounded-lg shadow-md text-sm font-medium flex items-center gap-2 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+          </svg>
+          Pin this
+        </button>
+      </div>
+      <p class="text-xs text-charcoal-500 mt-2">
+        Photo by <a href="#" class="text-terracotta-500 hover:underline">Eaters Collective</a> on Unsplash
+      </p>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="bg-cream-50 py-12">
     <div class="container mx-auto px-4">
       <div class="max-w-7xl mx-auto">
-        <div class="flex gap-12">
-          <!-- Table of Contents Sidebar -->
+        <div class="flex gap-8 lg:gap-12">
+          <!-- Left Sidebar: Table of Contents -->
           <TableOfContents />
 
-          <!-- Main Recipe Content -->
+          <!-- Main Content -->
           <div class="flex-1 max-w-3xl">
-            <!-- Recipe Metadata -->
-            <div class="mb-8 flex flex-wrap items-center gap-4 text-sm text-charcoal-600">
-              <time datetime={date.toISOString()}>
-                {formattedDate}
-              </time>
-              {difficulty && (
-                <>
-                  <span>•</span>
-                  <span>{difficulty}</span>
-                </>
-              )}
-              {rating && (
-                <>
-                  <span>•</span>
-                  <StarRating rating={rating} reviewCount={reviewCount} size="sm" />
-                </>
-              )}
+            <!-- Recipe Info Card -->
+            <div class="bg-cream-100 border-2 border-sage-200 rounded-2xl p-6 mb-8">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Total Time -->
+                <div>
+                  <div class="text-xs uppercase tracking-wider text-charcoal-600 mb-2 font-semibold">
+                    Total Time
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-charcoal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="text-2xl font-semibold text-charcoal-800">{totalMinutes} min</span>
+                  </div>
+                </div>
+
+                <!-- Prep + Cook -->
+                <div>
+                  <div class="text-xs uppercase tracking-wider text-charcoal-600 mb-2 font-semibold">
+                    Prep + Cook
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-charcoal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    <span class="text-xl font-semibold text-charcoal-800">{prepMinutes} mins + {cookMinutes} mins</span>
+                  </div>
+                </div>
+
+                <!-- Yield with Adjuster -->
+                <div>
+                  <div class="text-xs uppercase tracking-wider text-charcoal-600 mb-2 font-semibold">
+                    Yield
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <ServingAdjuster initialServings={servings} />
+                    <span class="text-charcoal-700 font-medium">servings</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <!-- Recipe Info Card -->
-            <RecipeInfo
-              prepTime={prepTime}
-              cookTime={cookTime}
-              servings={servings}
-            />
-
-            <!-- Recipe Content -->
-            <div class="recipe-content bg-white rounded-2xl shadow-sm p-8 md:p-12">
+            <!-- Main Recipe Content -->
+            <div class="recipe-content bg-white rounded-2xl shadow-sm p-8 md:p-10">
               <slot />
             </div>
 
             <!-- YouTube Video -->
             {youtube && (
-              <div class="mt-12 bg-white rounded-2xl shadow-sm p-8">
+              <div class="mt-8 bg-white rounded-2xl shadow-sm p-8">
                 <h2 class="text-2xl font-serif font-bold text-charcoal-800 mb-6">
                   Watch the Video
                 </h2>
@@ -133,25 +197,25 @@ const formattedDate = new Date(date).toLocaleDateString('en-US', {
             )}
 
             <!-- Share Section -->
-            <div class="mt-12 bg-white rounded-2xl shadow-sm p-8">
+            <div class="mt-8 bg-white rounded-2xl shadow-sm p-8">
               <h3 class="text-lg font-serif font-bold text-charcoal-800 mb-4">
                 Share this recipe
               </h3>
-              <div class="flex gap-4">
-                <button class="flex items-center gap-2 px-4 py-2 bg-cream-100 hover:bg-cream-200 text-charcoal-700 rounded-lg transition-colors">
-                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <div class="flex flex-wrap gap-3">
+                <button class="flex items-center gap-2 px-4 py-2 bg-cream-100 hover:bg-cream-200 text-charcoal-700 rounded-lg transition-colors text-sm font-medium">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                   </svg>
                   Facebook
                 </button>
-                <button class="flex items-center gap-2 px-4 py-2 bg-cream-100 hover:bg-cream-200 text-charcoal-700 rounded-lg transition-colors">
-                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <button class="flex items-center gap-2 px-4 py-2 bg-cream-100 hover:bg-cream-200 text-charcoal-700 rounded-lg transition-colors text-sm font-medium">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
                   </svg>
                   Twitter
                 </button>
-                <button class="flex items-center gap-2 px-4 py-2 bg-cream-100 hover:bg-cream-200 text-charcoal-700 rounded-lg transition-colors">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button class="flex items-center gap-2 px-4 py-2 bg-cream-100 hover:bg-cream-200 text-charcoal-700 rounded-lg transition-colors text-sm font-medium">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                   </svg>
                   Copy Link
@@ -159,11 +223,6 @@ const formattedDate = new Date(date).toLocaleDateString('en-US', {
               </div>
             </div>
           </div>
-
-          <!-- Right Sidebar (empty for now, placeholder for ads/related) -->
-          <aside class="hidden xl:block w-80">
-            <!-- Placeholder for future content -->
-          </aside>
         </div>
       </div>
     </div>
@@ -171,18 +230,20 @@ const formattedDate = new Date(date).toLocaleDateString('en-US', {
 </BaseLayout>
 
 <style>
+  /* Recipe Content Styling */
   .recipe-content {
     font-family: var(--font-family-sans);
     color: var(--color-charcoal-700);
     line-height: 1.75;
   }
 
+  /* Main Headings (# in markdown) */
   .recipe-content :global(h1) {
     font-family: var(--font-family-serif);
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 700;
     color: var(--color-charcoal-800);
-    margin-top: 3rem;
+    margin-top: 2.5rem;
     margin-bottom: 1.5rem;
     padding-bottom: 0.75rem;
     border-bottom: 2px solid var(--color-sage-200);
@@ -193,72 +254,105 @@ const formattedDate = new Date(date).toLocaleDateString('en-US', {
     margin-top: 0;
   }
 
+  /* Sub-headings */
   .recipe-content :global(h2) {
     font-family: var(--font-family-serif);
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--color-charcoal-800);
-    margin-top: 2.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-charcoal-700);
+    margin-top: 2rem;
     margin-bottom: 1rem;
   }
 
   .recipe-content :global(h3) {
     font-family: var(--font-family-serif);
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     font-weight: 600;
     color: var(--color-charcoal-700);
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     margin-bottom: 0.75rem;
   }
 
+  /* Paragraphs */
   .recipe-content :global(p) {
-    margin-bottom: 1.5rem;
-    font-size: 1.125rem;
+    margin-bottom: 1.25rem;
+    font-size: 1.0625rem;
+    line-height: 1.75;
   }
 
+  /* Lists */
   .recipe-content :global(ul),
   .recipe-content :global(ol) {
     margin-bottom: 2rem;
     padding-left: 0;
     list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0.75rem 2rem;
   }
 
+  /* Single-column on mobile */
+  @media (max-width: 640px) {
+    .recipe-content :global(ul),
+    .recipe-content :global(ol) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* List Items */
   .recipe-content :global(li) {
     position: relative;
     padding-left: 2rem;
-    margin-bottom: 1rem;
-    font-size: 1.0625rem;
+    font-size: 0.9375rem;
+    line-height: 1.6;
     display: flex;
     align-items: flex-start;
-    gap: 0.75rem;
+    break-inside: avoid;
   }
 
-  /* Checkable ingredients */
+  /* Checkable Ingredients (ul) */
+  .recipe-content :global(ul li) {
+    cursor: pointer;
+  }
+
   .recipe-content :global(ul li::before) {
     content: '';
     position: absolute;
     left: 0;
-    top: 0.375rem;
-    width: 1.25rem;
-    height: 1.25rem;
+    top: 0.25rem;
+    width: 1.125rem;
+    height: 1.125rem;
     border: 2px solid var(--color-sage-400);
     border-radius: 0.25rem;
     background: white;
-    cursor: pointer;
     flex-shrink: 0;
+    transition: all 0.2s;
   }
 
   .recipe-content :global(ul li:hover::before) {
     border-color: var(--color-sage-600);
+    background: var(--color-sage-50);
   }
 
-  /* Numbered instructions */
+  .recipe-content :global(ul li.checked) {
+    text-decoration: line-through;
+    opacity: 0.6;
+  }
+
+  .recipe-content :global(ul li.checked::before) {
+    background: var(--color-sage-500);
+    border-color: var(--color-sage-500);
+  }
+
+  /* Numbered Instructions (ol) */
   .recipe-content :global(ol) {
     counter-reset: step-counter;
+    grid-template-columns: 1fr;
   }
 
   .recipe-content :global(ol li) {
     counter-increment: step-counter;
+    cursor: default;
   }
 
   .recipe-content :global(ol li::before) {
@@ -266,8 +360,8 @@ const formattedDate = new Date(date).toLocaleDateString('en-US', {
     position: absolute;
     left: 0;
     top: 0;
-    width: 2rem;
-    height: 2rem;
+    width: 1.75rem;
+    height: 1.75rem;
     background: var(--color-terracotta-500);
     color: white;
     border-radius: 50%;
@@ -275,19 +369,22 @@ const formattedDate = new Date(date).toLocaleDateString('en-US', {
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     flex-shrink: 0;
   }
 
   .recipe-content :global(ol li) {
-    padding-left: 3.5rem;
+    padding-left: 3rem;
+    margin-bottom: 1.5rem;
   }
 
+  /* Strong text */
   .recipe-content :global(strong) {
     color: var(--color-charcoal-800);
     font-weight: 600;
   }
 
+  /* Links */
   .recipe-content :global(a) {
     color: var(--color-terracotta-500);
     text-decoration: underline;
@@ -297,6 +394,7 @@ const formattedDate = new Date(date).toLocaleDateString('en-US', {
     color: var(--color-terracotta-600);
   }
 
+  /* Print styles */
   @media print {
     .recipe-content :global(button),
     aside,
@@ -309,21 +407,19 @@ const formattedDate = new Date(date).toLocaleDateString('en-US', {
 <script>
   // Make ingredients checkable
   document.addEventListener('DOMContentLoaded', () => {
-    const ingredientLists = document.querySelectorAll('.recipe-content ul');
+    // Find ingredient lists (assume ## Ingredients creates ul)
+    const contentDiv = document.querySelector('.recipe-content');
+    if (!contentDiv) return;
+
+    const ingredientLists = contentDiv.querySelectorAll('ul');
     
     ingredientLists.forEach(list => {
       const items = list.querySelectorAll('li');
       items.forEach(item => {
-        item.style.cursor = 'pointer';
-        item.addEventListener('click', () => {
+        item.addEventListener('click', (e) => {
+          // Don't check if clicking a link inside
+          if ((e.target as HTMLElement).tagName === 'A') return;
           item.classList.toggle('checked');
-          if (item.classList.contains('checked')) {
-            item.style.textDecoration = 'line-through';
-            item.style.opacity = '0.6';
-          } else {
-            item.style.textDecoration = 'none';
-            item.style.opacity = '1';
-          }
         });
       });
     });

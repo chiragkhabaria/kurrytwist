@@ -1,0 +1,331 @@
+---
+/**
+ * Recipe Layout
+ * Cucinetta-inspired layout with TOC sidebar, serving adjustment, checkable ingredients
+ */
+import BaseLayout from './BaseLayout.astro';
+import RecipeInfo from '../components/RecipeInfo.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import StarRating from '../components/StarRating.astro';
+import YoutubeEmbed from '../components/YoutubeEmbed.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  category: string;
+  prepTime: string;
+  cookTime: string;
+  servings: number;
+  difficulty?: string;
+  image: string;
+  youtube?: string;
+  date: Date;
+  rating?: number;
+  reviewCount?: number;
+}
+
+const {
+  title,
+  description,
+  category,
+  prepTime,
+  cookTime,
+  servings,
+  difficulty,
+  image,
+  youtube,
+  date,
+  rating,
+  reviewCount
+} = Astro.props;
+
+const fallbackImage = '/images/placeholder.jpg';
+const imageUrl = image || fallbackImage;
+
+// Format date
+const formattedDate = new Date(date).toLocaleDateString('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric'
+});
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero Section -->
+  <div class="relative w-full h-[60vh] min-h-[400px] max-h-[600px]">
+    <img
+      src={imageUrl}
+      alt={title}
+      class="w-full h-full object-cover"
+      onerror="this.onerror=null; this.src='/images/placeholder.jpg';"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-charcoal-900/80 via-charcoal-900/40 to-transparent"></div>
+    
+    <!-- Hero Content -->
+    <div class="absolute bottom-0 left-0 right-0 pb-12">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+          <div class="mb-4">
+            <span class="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-xs uppercase tracking-wider text-charcoal-700 font-semibold rounded-full">
+              {category}
+            </span>
+          </div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-4">
+            {title}
+          </h1>
+          <p class="text-xl text-white/90 max-w-2xl">
+            {description}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="bg-cream-50 py-12 md:py-16">
+    <div class="container mx-auto px-4">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex gap-12">
+          <!-- Table of Contents Sidebar -->
+          <TableOfContents />
+
+          <!-- Main Recipe Content -->
+          <div class="flex-1 max-w-3xl">
+            <!-- Recipe Metadata -->
+            <div class="mb-8 flex flex-wrap items-center gap-4 text-sm text-charcoal-600">
+              <time datetime={date.toISOString()}>
+                {formattedDate}
+              </time>
+              {difficulty && (
+                <>
+                  <span>•</span>
+                  <span>{difficulty}</span>
+                </>
+              )}
+              {rating && (
+                <>
+                  <span>•</span>
+                  <StarRating rating={rating} reviewCount={reviewCount} size="sm" />
+                </>
+              )}
+            </div>
+
+            <!-- Recipe Info Card -->
+            <RecipeInfo
+              prepTime={prepTime}
+              cookTime={cookTime}
+              servings={servings}
+            />
+
+            <!-- Recipe Content -->
+            <div class="recipe-content bg-white rounded-2xl shadow-sm p-8 md:p-12">
+              <slot />
+            </div>
+
+            <!-- YouTube Video -->
+            {youtube && (
+              <div class="mt-12 bg-white rounded-2xl shadow-sm p-8">
+                <h2 class="text-2xl font-serif font-bold text-charcoal-800 mb-6">
+                  Watch the Video
+                </h2>
+                <YoutubeEmbed videoId={youtube} title={title} />
+              </div>
+            )}
+
+            <!-- Share Section -->
+            <div class="mt-12 bg-white rounded-2xl shadow-sm p-8">
+              <h3 class="text-lg font-serif font-bold text-charcoal-800 mb-4">
+                Share this recipe
+              </h3>
+              <div class="flex gap-4">
+                <button class="flex items-center gap-2 px-4 py-2 bg-cream-100 hover:bg-cream-200 text-charcoal-700 rounded-lg transition-colors">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  </svg>
+                  Facebook
+                </button>
+                <button class="flex items-center gap-2 px-4 py-2 bg-cream-100 hover:bg-cream-200 text-charcoal-700 rounded-lg transition-colors">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                  </svg>
+                  Twitter
+                </button>
+                <button class="flex items-center gap-2 px-4 py-2 bg-cream-100 hover:bg-cream-200 text-charcoal-700 rounded-lg transition-colors">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                  </svg>
+                  Copy Link
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Sidebar (empty for now, placeholder for ads/related) -->
+          <aside class="hidden xl:block w-80">
+            <!-- Placeholder for future content -->
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .recipe-content {
+    font-family: var(--font-family-sans);
+    color: var(--color-charcoal-700);
+    line-height: 1.75;
+  }
+
+  .recipe-content :global(h1) {
+    font-family: var(--font-family-serif);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-charcoal-800);
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--color-sage-200);
+    scroll-margin-top: 100px;
+  }
+
+  .recipe-content :global(h1:first-child) {
+    margin-top: 0;
+  }
+
+  .recipe-content :global(h2) {
+    font-family: var(--font-family-serif);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-charcoal-800);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .recipe-content :global(h3) {
+    font-family: var(--font-family-serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-charcoal-700);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .recipe-content :global(p) {
+    margin-bottom: 1.5rem;
+    font-size: 1.125rem;
+  }
+
+  .recipe-content :global(ul),
+  .recipe-content :global(ol) {
+    margin-bottom: 2rem;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .recipe-content :global(li) {
+    position: relative;
+    padding-left: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.0625rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  /* Checkable ingredients */
+  .recipe-content :global(ul li::before) {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.375rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid var(--color-sage-400);
+    border-radius: 0.25rem;
+    background: white;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .recipe-content :global(ul li:hover::before) {
+    border-color: var(--color-sage-600);
+  }
+
+  /* Numbered instructions */
+  .recipe-content :global(ol) {
+    counter-reset: step-counter;
+  }
+
+  .recipe-content :global(ol li) {
+    counter-increment: step-counter;
+  }
+
+  .recipe-content :global(ol li::before) {
+    content: counter(step-counter);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2rem;
+    height: 2rem;
+    background: var(--color-terracotta-500);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.875rem;
+    flex-shrink: 0;
+  }
+
+  .recipe-content :global(ol li) {
+    padding-left: 3.5rem;
+  }
+
+  .recipe-content :global(strong) {
+    color: var(--color-charcoal-800);
+    font-weight: 600;
+  }
+
+  .recipe-content :global(a) {
+    color: var(--color-terracotta-500);
+    text-decoration: underline;
+  }
+
+  .recipe-content :global(a:hover) {
+    color: var(--color-terracotta-600);
+  }
+
+  @media print {
+    .recipe-content :global(button),
+    aside,
+    nav {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  // Make ingredients checkable
+  document.addEventListener('DOMContentLoaded', () => {
+    const ingredientLists = document.querySelectorAll('.recipe-content ul');
+    
+    ingredientLists.forEach(list => {
+      const items = list.querySelectorAll('li');
+      items.forEach(item => {
+        item.style.cursor = 'pointer';
+        item.addEventListener('click', () => {
+          item.classList.toggle('checked');
+          if (item.classList.contains('checked')) {
+            item.style.textDecoration = 'line-through';
+            item.style.opacity = '0.6';
+          } else {
+            item.style.textDecoration = 'none';
+            item.style.opacity = '1';
+          }
+        });
+      });
+    });
+  });
+</script>
