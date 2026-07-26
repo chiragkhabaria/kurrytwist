@@ -1,0 +1,64 @@
+---
+/**
+ * Recipe Info Card Component
+ * Displays recipe metadata: prep time, cook time, yield
+ */
+import ServingAdjuster from './ServingAdjuster.astro';
+
+interface Props {
+  prepTime: string;
+  cookTime: string;
+  servings: number;
+}
+
+const { prepTime, cookTime, servings } = Astro.props;
+
+// Calculate total time
+const prepMinutes = parseInt(prepTime.match(/\d+/)?.[0] || '0');
+const cookMinutes = parseInt(cookTime.match(/\d+/)?.[0] || '0');
+const totalMinutes = prepMinutes + cookMinutes;
+---
+
+<div class="bg-cream-50 border-2 border-sage-200 rounded-2xl p-6 mb-8">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- Total Time -->
+    <div class="text-center md:text-left">
+      <div class="text-xs uppercase tracking-wider text-sage-700 font-semibold mb-2">
+        Total Time
+      </div>
+      <div class="flex items-center justify-center md:justify-start gap-2">
+        <svg class="w-5 h-5 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span class="text-xl font-semibold text-charcoal-800">{totalMinutes} min</span>
+      </div>
+    </div>
+
+    <!-- Prep + Cook -->
+    <div class="text-center md:text-left">
+      <div class="text-xs uppercase tracking-wider text-sage-700 font-semibold mb-2">
+        Prep + Cook
+      </div>
+      <div class="flex items-center justify-center md:justify-start gap-2">
+        <svg class="w-5 h-5 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg>
+        <span class="text-xl font-semibold text-charcoal-800">{prepTime} + {cookTime}</span>
+      </div>
+    </div>
+
+    <!-- Yield -->
+    <div class="text-center md:text-left">
+      <div class="text-xs uppercase tracking-wider text-sage-700 font-semibold mb-2">
+        Yield
+      </div>
+      <div class="flex items-center justify-center md:justify-start gap-3">
+        <svg class="w-5 h-5 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        <ServingAdjuster initialServings={servings} />
+        <span class="text-charcoal-600">servings</span>
+      </div>
+    </div>
+  </div>
+</div>

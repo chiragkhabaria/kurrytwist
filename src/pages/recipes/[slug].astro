@@ -22,14 +22,16 @@ const { Content, remarkPluginFrontmatter } = await render(recipe);
 <RecipeLayout
   title={recipe.data.title}
   description={recipe.data.description}
-  image={recipe.data.image}
   category={recipe.data.category}
   prepTime={recipe.data.prepTime}
   cookTime={recipe.data.cookTime}
   servings={recipe.data.servings}
   difficulty={recipe.data.difficulty}
+  image={recipe.data.image}
   youtube={recipe.data.youtube}
-  publishedTime={recipe.data.date.toISOString()}
+  date={recipe.data.date}
+  rating={recipe.data.rating}
+  reviewCount={recipe.data.reviewCount}
 >
   <!-- Main content (instructions, tips, etc.) -->
   <Content />

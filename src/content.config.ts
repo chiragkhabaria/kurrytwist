@@ -21,6 +21,8 @@ const recipesCollection = defineCollection({
     youtube: z.string().optional(), // YouTube video ID
     featured: z.boolean().optional().default(false),
     date: z.coerce.date(),
+    rating: z.number().optional(),
+    reviewCount: z.number().optional(),
   }),
 });
 

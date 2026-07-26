@@ -11,6 +11,8 @@ image: "/images/sample-recipe.jpg"
 youtube: "dQw4w9WgXcQ"
 featured: true
 date: 2024-01-15
+rating: 4.9
+reviewCount: 15
 ---
 
 ## Ingredients

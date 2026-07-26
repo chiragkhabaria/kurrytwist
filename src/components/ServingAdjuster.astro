@@ -1,0 +1,79 @@
+---
+/**
+ * Serving Adjuster Component
+ * Interactive controls to adjust serving size with + and - buttons
+ */
+interface Props {
+  initialServings: number;
+}
+
+const { initialServings } = Astro.props;
+---
+
+<div class="flex items-center gap-3">
+  <button
+    id="decrease-servings"
+    class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-terracotta-500 text-terracotta-500 hover:bg-terracotta-500 hover:text-white transition-colors"
+    aria-label="Decrease servings"
+  >
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+    </svg>
+  </button>
+  
+  <span id="serving-count" class="text-2xl font-semibold text-charcoal-800 min-w-[3rem] text-center">
+    {initialServings}
+  </span>
+  
+  <button
+    id="increase-servings"
+    class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-terracotta-500 text-terracotta-500 hover:bg-terracotta-500 hover:text-white transition-colors"
+    aria-label="Increase servings"
+  >
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+    </svg>
+  </button>
+</div>
+
+<script define:vars={{ initialServings }}>
+  let currentServings = initialServings;
+  const servingCountEl = document.getElementById('serving-count');
+  const decreaseBtn = document.getElementById('decrease-servings');
+  const increaseBtn = document.getElementById('increase-servings');
+
+  function updateServings(newServings) {
+    if (newServings < 1) return;
+    currentServings = newServings;
+    servingCountEl.textContent = currentServings;
+    
+    // Update all ingredient quantities
+    const ingredients = document.querySelectorAll('[data-original-amount]');
+    ingredients.forEach(ingredient => {
+      const originalAmount = parseFloat(ingredient.dataset.originalAmount);
+      const unit = ingredient.dataset.unit;
+      const scaledAmount = (originalAmount * currentServings) / initialServings;
+      
+      // Format the scaled amount nicely
+      let displayAmount;
+      if (scaledAmount % 1 === 0) {
+        displayAmount = scaledAmount;
+      } else if (scaledAmount < 1) {
+        // Convert to fractions for small amounts
+        displayAmount = scaledAmount.toFixed(2);
+      } else {
+        displayAmount = scaledAmount.toFixed(1);
+      }
+      
+      ingredient.textContent = `${displayAmount} ${unit}`;
+    });
+  }
+
+  decreaseBtn?.addEventListener('click', () => {
+    updateServings(currentServings - 1);
+  });
+
+  increaseBtn?.addEventListener('click', () => {
+    updateServings(currentServings + 1);
+  });
+</script>

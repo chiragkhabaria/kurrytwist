@@ -1,0 +1,79 @@
+---
+/**
+ * Table of Contents Component
+ * Sticky sidebar navigation for recipe sections
+ */
+---
+
+<aside class="hidden lg:block sticky top-24 w-64">
+  <div class="bg-white rounded-xl border border-sage-200 p-6">
+    <h3 class="text-xs uppercase tracking-wider text-sage-700 font-semibold mb-4">
+      Contents
+    </h3>
+    <nav class="space-y-3">
+      <a
+        href="#introduction"
+        class="toc-link block text-charcoal-700 hover:text-terracotta-500 transition-colors text-sm"
+      >
+        Introduction
+      </a>
+      <a
+        href="#ingredients"
+        class="toc-link block text-charcoal-700 hover:text-terracotta-500 transition-colors text-sm"
+      >
+        Ingredients
+      </a>
+      <a
+        href="#instructions"
+        class="toc-link block text-charcoal-700 hover:text-terracotta-500 transition-colors text-sm"
+      >
+        Instructions
+      </a>
+      <a
+        href="#tips"
+        class="toc-link block text-charcoal-700 hover:text-terracotta-500 transition-colors text-sm"
+      >
+        Tips
+      </a>
+    </nav>
+  </div>
+</aside>
+
+<style>
+  .toc-link.active {
+    color: var(--color-terracotta-500);
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  // Simple scroll spy
+  const sections = ['introduction', 'ingredients', 'instructions', 'tips'];
+  const links = document.querySelectorAll('.toc-link');
+
+  function updateActiveLink() {
+    let currentSection = '';
+    
+    sections.forEach(section => {
+      const element = document.getElementById(section);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        if (rect.top <= 150 && rect.bottom >= 150) {
+          currentSection = section;
+        }
+      }
+    });
+
+    links.forEach(link => {
+      const href = link.getAttribute('href')?.slice(1);
+      if (href === currentSection) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink);
+  updateActiveLink();
+</script>
