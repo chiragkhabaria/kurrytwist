@@ -7,7 +7,7 @@ prepTime: "20 mins"
 cookTime: "30 mins"
 servings: 4
 difficulty: "Medium"
-image: "/images/sample-recipe.jpg"
+image: "/images/paneer-butter-masala.jpg"
 youtube: "dQw4w9WgXcQ"
 featured: true
 date: 2024-01-15

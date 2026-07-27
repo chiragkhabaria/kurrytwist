@@ -7,7 +7,7 @@ prepTime: "20 mins"
 cookTime: "40 mins"
 servings: 20
 difficulty: "Hard"
-image: "/images/sample-recipe.jpg"
+image: "/images/gulab-jamun.jpg"
 youtube: ""
 featured: false
 date: 2024-01-22

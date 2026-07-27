@@ -7,7 +7,7 @@ prepTime: "45 mins"
 cookTime: "30 mins"
 servings: 12
 difficulty: "Medium"
-image: "/images/sample-recipe.jpg"
+image: "/images/vegetable-samosas.jpg"
 youtube: ""
 featured: false
 date: 2024-01-20

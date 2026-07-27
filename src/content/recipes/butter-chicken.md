@@ -7,7 +7,7 @@ prepTime: "30 mins"
 cookTime: "40 mins"
 servings: 6
 difficulty: "Medium"
-image: "/images/sample-recipe.jpg"
+image: "/images/butter-chicken.jpg"
 youtube: ""
 featured: true
 date: 2024-01-15

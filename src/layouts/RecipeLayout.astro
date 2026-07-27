@@ -39,7 +39,7 @@ const {
   reviewCount
 } = Astro.props;
 
-const fallbackImage = '/images/placeholder.jpg';
+const fallbackImage = `${import.meta.env.BASE_URL}images/placeholder.jpg`;
 const imageUrl = image || fallbackImage;
 
 // Format date
@@ -61,7 +61,7 @@ const totalMinutes = prepMinutes + cookMinutes;
     <div class="container mx-auto px-4 max-w-5xl">
       <!-- Breadcrumb -->
       <div class="mb-4">
-        <a href="/" class="text-terracotta-500 text-xs uppercase tracking-wider hover:text-terracotta-600">
+        <a href={import.meta.env.BASE_URL} class="text-terracotta-500 text-xs uppercase tracking-wider hover:text-terracotta-600">
           ← All recipes
         </a>
       </div>
@@ -114,7 +114,7 @@ const totalMinutes = prepMinutes + cookMinutes;
           src={imageUrl}
           alt={title}
           class="w-full h-full object-cover"
-          onerror="this.onerror=null; this.src='/images/placeholder.jpg';"
+          onerror={`this.onerror=null; this.src='${import.meta.env.BASE_URL}images/placeholder.jpg';`}
         />
         <button class="absolute bottom-4 right-4 px-4 py-2 bg-white hover:bg-cream-50 text-charcoal-700 rounded-lg shadow-md text-sm font-medium flex items-center gap-2 transition-colors">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

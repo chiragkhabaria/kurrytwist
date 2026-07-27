@@ -7,7 +7,7 @@ prepTime: "15 mins"
 cookTime: "25 mins"
 servings: 4
 difficulty: "Easy"
-image: "/images/sample-recipe.jpg"
+image: "/images/palak-paneer.jpg"
 youtube: ""
 featured: false
 date: 2024-01-18
