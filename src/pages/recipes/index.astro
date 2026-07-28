@@ -1,69 +1,70 @@
 ---
 /**
  * Recipes Listing Page
- * Premium editorial recipe listing with clean filters
- * Magazine-style grid layout
+ * Filter by category + sort — all client-side, no page reload
  */
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import RecipeCard from '../../components/RecipeCard.astro';
 
-// Fetch all recipes
 const allRecipes = await getCollection('recipes');
 
-// Sort by date (newest first)
+// Default sort: newest first (server-side initial render)
 const sortedRecipes = allRecipes.sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime()
 );
 
-// Get unique categories
-const categories = [...new Set(allRecipes.map(recipe => recipe.data.category))];
+// Unique categories in the order they appear
+const categories = [...new Set(sortedRecipes.map(r => r.data.category))];
 ---
 
 <BaseLayout
   title="All Recipes - Kurry Twist"
-  description="Browse our complete collection of authentic Indian recipes. From appetizers to desserts, find your next favorite dish."
+  description="Browse our complete collection of authentic Indian recipes. From appetizers to desserts, find your next favourite dish."
 >
-  <!-- Header Section -->
+  <!-- Page Header -->
   <section class="bg-cream-50 py-20 md:py-28 border-b border-cream-400">
     <div class="container mx-auto px-4 text-center">
-      <p class="text-sm font-sans uppercase tracking-widest text-terracotta-500 mb-3">
-        Our collection
-      </p>
-      <h1 class="text-5xl md:text-6xl font-serif font-bold text-charcoal-700 mb-6">
-        All Recipes
-      </h1>
+      <p class="text-sm font-sans uppercase tracking-widest text-terracotta-500 mb-3">Our collection</p>
+      <h1 class="text-5xl md:text-6xl font-serif font-bold text-charcoal-700 mb-6">All Recipes</h1>
       <p class="text-lg text-charcoal-500 max-w-2xl mx-auto">
-        Explore our complete collection of {sortedRecipes.length} carefully crafted recipes
+        Explore our complete collection of
+        <span id="recipe-count">{sortedRecipes.length}</span> carefully crafted recipes
       </p>
     </div>
   </section>
 
-  <!-- Filter Section (Placeholder) -->
+  <!-- Filter + Sort Bar -->
   <section class="bg-white border-b border-cream-400 py-6 sticky top-20 z-40">
     <div class="container mx-auto px-4">
       <div class="flex flex-col md:flex-row items-center justify-between gap-4 max-w-7xl mx-auto">
-        <!-- Categories Filter Placeholder -->
+
+        <!-- Category Filter Buttons -->
         <div class="flex flex-wrap items-center gap-3">
           <span class="text-xs font-sans uppercase tracking-wider text-charcoal-600 font-semibold">Filter:</span>
-          <button class="px-4 py-2 bg-terracotta-500 text-white text-xs font-sans font-semibold uppercase tracking-wider transition-colors">
-            All
-          </button>
-          {categories.map((category) => (
-            <button class="px-4 py-2 bg-cream-200 text-charcoal-600 text-xs font-sans font-semibold uppercase tracking-wider hover:bg-cream-300 transition-colors">
-              {category}
-            </button>
+          <button
+            class="filter-btn active px-4 py-2 text-xs font-sans font-semibold uppercase tracking-wider transition-colors"
+            data-filter="all"
+          >All</button>
+          {categories.map((cat) => (
+            <button
+              class="filter-btn px-4 py-2 text-xs font-sans font-semibold uppercase tracking-wider transition-colors"
+              data-filter={cat.toLowerCase()}
+            >{cat}</button>
           ))}
         </div>
 
-        <!-- Sort Placeholder -->
+        <!-- Sort Dropdown -->
         <div class="flex items-center gap-3">
           <span class="text-xs font-sans uppercase tracking-wider text-charcoal-600 font-semibold">Sort:</span>
-          <select class="px-4 py-2 border border-cream-400 text-xs font-sans uppercase tracking-wider text-charcoal-600 bg-white hover:border-terracotta-500 focus:outline-none focus:border-terracotta-500">
-            <option>Newest First</option>
-            <option>Oldest First</option>
-            <option>A-Z</option>
-            <option>Z-A</option>
+          <select
+            id="sort-select"
+            class="px-4 py-2 border border-cream-400 text-xs font-sans uppercase tracking-wider text-charcoal-600 bg-white hover:border-terracotta-500 focus:outline-none focus:border-terracotta-500 cursor-pointer"
+          >
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="az">A → Z</option>
+            <option value="za">Z → A</option>
           </select>
         </div>
       </div>
@@ -74,9 +75,16 @@ const categories = [...new Set(allRecipes.map(recipe => recipe.data.category))];
   <section class="py-20 md:py-28 bg-white">
     <div class="container mx-auto px-4">
       <div class="max-w-7xl mx-auto">
-        {sortedRecipes.length > 0 ? (
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-            {sortedRecipes.map((recipe) => (
+
+        <!-- Grid - each card wrapped with data attrs for JS -->
+        <div id="recipes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+          {sortedRecipes.map((recipe) => (
+            <div
+              class="recipe-item"
+              data-category={recipe.data.category.toLowerCase()}
+              data-date={recipe.data.date.toISOString()}
+              data-title={recipe.data.title.toLowerCase()}
+            >
               <RecipeCard
                 title={recipe.data.title}
                 slug={recipe.id}
@@ -91,13 +99,19 @@ const categories = [...new Set(allRecipes.map(recipe => recipe.data.category))];
                 rating={recipe.data.rating}
                 reviewCount={recipe.data.reviewCount}
               />
-            ))}
-          </div>
-        ) : (
-          <div class="text-center py-16">
-            <p class="text-charcoal-400 text-lg">No recipes found. Check back soon!</p>
-          </div>
-        )}
+            </div>
+          ))}
+        </div>
+
+        <!-- Empty state (hidden by default, shown by JS) -->
+        <div id="no-results" class="hidden text-center py-16">
+          <p class="text-charcoal-400 text-lg">No recipes found in this category.</p>
+          <button
+            class="mt-4 text-terracotta-500 hover:underline text-sm"
+            onclick="document.querySelector('[data-filter=all]').click()"
+          >Show all recipes</button>
+        </div>
+
       </div>
     </div>
   </section>
@@ -106,12 +120,8 @@ const categories = [...new Set(allRecipes.map(recipe => recipe.data.category))];
   <section class="py-20 md:py-28 bg-sage-50">
     <div class="container mx-auto px-4">
       <div class="max-w-2xl mx-auto text-center">
-        <h2 class="text-3xl md:text-4xl font-serif font-bold text-charcoal-700 mb-4">
-          Stay Updated
-        </h2>
-        <p class="text-charcoal-500 text-lg mb-8">
-          Get new recipes delivered straight to your inbox
-        </p>
+        <h2 class="text-3xl md:text-4xl font-serif font-bold text-charcoal-700 mb-4">Stay Updated</h2>
+        <p class="text-charcoal-500 text-lg mb-8">Get new recipes delivered straight to your inbox</p>
         <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
           <input
             type="email"
@@ -122,14 +132,97 @@ const categories = [...new Set(allRecipes.map(recipe => recipe.data.category))];
           <button
             type="submit"
             class="px-8 py-4 bg-terracotta-500 text-white font-sans font-semibold text-sm uppercase tracking-wider hover:bg-terracotta-600 transition-colors whitespace-nowrap"
-          >
-            Subscribe
-          </button>
+          >Subscribe</button>
         </form>
-        <p class="text-xs text-charcoal-400 mt-4">
-          We respect your privacy. Unsubscribe anytime.
-        </p>
+        <p class="text-xs text-charcoal-400 mt-4">We respect your privacy. Unsubscribe anytime.</p>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .filter-btn {
+    background: #e8e0d8;        /* cream-200 */
+    color: #4a4035;             /* charcoal-600 */
+  }
+  .filter-btn:hover {
+    background: #d9cfc5;        /* cream-300 */
+  }
+  .filter-btn.active {
+    background: #c0604a;        /* terracotta-500 */
+    color: #ffffff;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var activeFilter = 'all';
+    var activeSort   = 'newest';
+
+    var grid       = document.getElementById('recipes-grid');
+    var noResults  = document.getElementById('no-results');
+    var countEl    = document.getElementById('recipe-count');
+    var sortSelect = document.getElementById('sort-select');
+    var filterBtns = document.querySelectorAll('.filter-btn');
+
+    function getItems() {
+      return Array.from(grid.querySelectorAll('.recipe-item'));
+    }
+
+    function applySort(items) {
+      items.sort(function (a, b) {
+        if (activeSort === 'newest') return new Date(b.dataset.date) - new Date(a.dataset.date);
+        if (activeSort === 'oldest') return new Date(a.dataset.date) - new Date(b.dataset.date);
+        if (activeSort === 'az')     return a.dataset.title.localeCompare(b.dataset.title);
+        if (activeSort === 'za')     return b.dataset.title.localeCompare(a.dataset.title);
+        return 0;
+      });
+      // Re-insert in sorted order
+      items.forEach(function (item) { grid.appendChild(item); });
+    }
+
+    function applyFilter() {
+      var items   = getItems();
+      var visible = 0;
+
+      // Sort first so visible cards are in the right order
+      applySort(items);
+
+      // Then show/hide
+      items.forEach(function (item) {
+        var match = activeFilter === 'all' || item.dataset.category === activeFilter;
+        item.style.display = match ? '' : 'none';
+        if (match) visible++;
+      });
+
+      // Update count
+      if (countEl) countEl.textContent = visible;
+
+      // Toggle empty state
+      if (noResults) {
+        noResults.classList.toggle('hidden', visible > 0);
+      }
+    }
+
+    // Filter button clicks
+    filterBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        activeFilter = btn.dataset.filter;
+
+        // Update active styling
+        filterBtns.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+
+        applyFilter();
+      });
+    });
+
+    // Sort change
+    if (sortSelect) {
+      sortSelect.addEventListener('change', function () {
+        activeSort = sortSelect.value;
+        applyFilter();
+      });
+    }
+  });
+</script>
