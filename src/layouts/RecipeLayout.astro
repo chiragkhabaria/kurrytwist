@@ -39,8 +39,10 @@ const {
   reviewCount
 } = Astro.props;
 
-const fallbackImage = `${import.meta.env.BASE_URL}images/placeholder.jpg`;
-const imageUrl = image || fallbackImage;
+const base = import.meta.env.BASE_URL;
+const fallbackImage = `${base}images/placeholder.jpg`;
+// Strip leading slash from frontmatter image path and prepend base
+const imageUrl = image ? `${base}${image.replace(/^\//, '')}` : fallbackImage;
 
 // Format date
 const formattedDate = new Date(date).toLocaleDateString('en-US', {
